@@ -1,0 +1,6 @@
+h1 {
+    background-color: indianred;
+    color: white;
+    display: flex;
+    padding: 16px;
+}

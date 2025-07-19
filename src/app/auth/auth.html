@@ -1,0 +1,168 @@
+<div class="auth-container">
+  <div class="auth-wrapper">
+    <div class="auth-background">
+      <div class="bg-circle circle-1"></div>
+      <div class="bg-circle circle-2"></div>
+      <div class="bg-circle circle-3"></div>
+    </div>
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="auth-title">{{ isSignUp ? 'Create Account' : 'Welcome Back' }}</h1>
+        <p class="auth-subtitle">
+          {{ isSignUp ? 'Join us and start shopping today' : 'Sign in to your account to continue' }}
+        </p>
+      </div>
+      <div class="auth-toggle">
+        <button 
+          type="button"
+          class="toggle-btn"
+          [class.active]="!isSignUp"
+          (click)="!isSignUp || toggleAuthMode()">
+          Sign In
+        </button>
+        <button 
+          type="button"
+          class="toggle-btn"
+          [class.active]="isSignUp"
+          (click)="isSignUp || toggleAuthMode()">
+          Sign Up
+        </button>
+      </div>
+      <div class="message-container">
+        <div *ngIf="errorMessage" class="message error-message">
+          <span class="message-icon">⚠️</span>
+          {{ errorMessage }}
+        </div>
+        <div *ngIf="successMessage" class="message success-message">
+          <span class="message-icon">✅</span>
+          {{ successMessage }}
+        </div>
+      </div>
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="auth-form">
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <div class="input-container">
+            <span class="input-icon">📧</span>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="form-input"
+              [class.error]="isFieldInvalid('email')"
+              placeholder="Enter your email address"
+              autocomplete="email">
+          </div>
+          <div *ngIf="getFieldError('email')" class="field-error">
+            {{ getFieldError('email') }}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-container">
+            <span class="input-icon">🔒</span>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              class="form-input"
+              [class.error]="isFieldInvalid('password')"
+              placeholder="Enter your password"
+              autocomplete="current-password">
+            <button
+              type="button"
+              class="toggle-password-btn"
+              (click)="togglePasswordVisibility()"
+              [title]="showPassword ? 'Hide password' : 'Show password'">
+              {{ showPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
+          <div *ngIf="getFieldError('password')" class="field-error">
+            {{ getFieldError('password') }}
+          </div>
+        </div>
+        <div class="form-group" *ngIf="isSignUp">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <div class="input-container">
+            <span class="input-icon">🔒</span>
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              class="form-input"
+              [class.error]="isFieldInvalid('confirmPassword')"
+              placeholder="Confirm your password"
+              autocomplete="new-password">
+            <button
+              type="button"
+              class="toggle-password-btn"
+              (click)="toggleConfirmPasswordVisibility()"
+              [title]="showConfirmPassword ? 'Hide password' : 'Show password'">
+              {{ showConfirmPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
+          <div *ngIf="getFieldError('confirmPassword')" class="field-error">
+            {{ getFieldError('confirmPassword') }}
+          </div>
+        </div>
+        <div class="form-options" *ngIf="!isSignUp">
+          <button 
+            type="button" 
+            class="forgot-password-btn"
+            (click)="onForgotPassword()">
+            Forgot your password?
+          </button>
+        </div>
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [class.loading]="isLoading"
+          [disabled]="isLoading || authForm.invalid">
+          <span *ngIf="!isLoading">
+            {{ isSignUp ? 'Create Account' : 'Sign In' }}
+          </span>
+          <span *ngIf="isLoading" class="loading-content">
+            <span class="spinner"></span>
+            {{ isSignUp ? 'Creating Account...' : 'Signing In...' }}
+          </span>
+        </button>
+      </form>
+      <div class="social-login">
+        <div class="divider">
+          <span class="divider-text">or continue with</span>
+        </div>
+        <div class="social-buttons">
+          <button 
+            type="button" 
+            class="social-btn google-btn"
+            (click)="signInWithGoogle()">
+            <span class="social-icon">🌐</span>
+            Google
+          </button>
+          <button 
+            type="button" 
+            class="social-btn facebook-btn"
+            (click)="signInWithFacebook()">
+            <span class="social-icon">📘</span>
+            Facebook
+          </button>
+        </div>
+      </div>
+      <div class="auth-footer">
+        <p class="footer-text">
+          {{ isSignUp ? 'Already have an account?' : "Don't have an account?" }}
+          <button 
+            type="button" 
+            class="auth-switch-btn"
+            (click)="toggleAuthMode()">
+            {{ isSignUp ? 'Sign In' : 'Sign Up' }}
+          </button>
+        </p>
+      </div>
+    </div>
+    <div class="demo-credentials" *ngIf="!isSignUp">
+      <h4>Demo Credentials:</h4>
+      <p><strong>Email:</strong> test&#64;example.com</p>
+      <p><strong>Password:</strong> password123</p>
+    </div>
+  </div>
+</div>
